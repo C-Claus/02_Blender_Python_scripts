@@ -22,9 +22,9 @@ from bpy.props import StringProperty, BoolProperty, IntProperty, EnumProperty
 from bpy_extras.io_utils import ImportHelper 
 from bpy.types import (Operator, PropertyGroup)
 
-import blenderbim.bim.import_ifc
-from blenderbim.bim.ifc import IfcStore
-import blenderbim.tool as tool
+import bonsai.bim.import_ifc
+from bonsai.bim.ifc import IfcStore
+import bonsai.tool as tool
 import ifcopenshell
 
 import openpyxl
@@ -497,7 +497,7 @@ class WriteToXLSX(bpy.types.Operator):
                 worksheet.write_formula(str(column_letter)+'1', total_volume)
                 
         # Close the Pandas Excel writer and output the Excel file.
-        writer.save()
+        writer._save()
         open_file(blenderbim_spreadsheet_properties.my_xlsx_file)
         
         print (time.perf_counter() - start_time, "seconds for the .xlsx to be written")
@@ -530,7 +530,7 @@ class WriteToODS(bpy.types.Operator):
         construct_data_frame.df.to_excel(writer_ods, sheet_name=blenderbim_spreadsheet_properties.my_workbook, startrow=0, header=True, index=False)
         
         worksheet_ods = writer_ods.sheets[blenderbim_spreadsheet_properties.my_workbook]
-        writer_ods.save()
+        writer_ods._save()
    
         open_file(blenderbim_spreadsheet_properties.my_ods_file)
         blenderbim_spreadsheet_properties.my_file_path = IfcStore.path.replace('.ifc','_blenderbim.ods')
